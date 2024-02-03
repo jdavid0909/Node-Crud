@@ -1,3 +1,4 @@
+const categoria = require("../models/categoria");
 const Role = require("../models/role");
 const usuario = require("../models/usuario");
 
@@ -21,9 +22,18 @@ const esEmailValid = async (correo = '') => {
 
 const existeUsuarioByID = async (id) => {
     const existeID = await usuario.findById(id);
-    console.log(existeID);
 
     if (!existeID) {
+        throw new Error(`el id ${id} es invalido`);
+    }
+}
+
+
+const existeCategoriaByID = async (id) => {
+    const existeID = await categoria.findById(id);
+
+
+    if (!existeID || !existeID.estado) {
         throw new Error(`el id ${id} es invalido`);
     }
 }
@@ -32,5 +42,6 @@ const existeUsuarioByID = async (id) => {
 module.exports = {
     esRolValido,
     esEmailValid,
-    existeUsuarioByID
+    existeUsuarioByID,
+    existeCategoriaByID
 }

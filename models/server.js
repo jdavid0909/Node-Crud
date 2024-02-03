@@ -6,11 +6,15 @@ const connectionDb = require('../database/config');
 class Server {
     constructor() {
         this.app = express();
-        this.port= process.env.PORT;
+        this.port = process.env.PORT;
+
+        this.paths = {
+            auth: '/api/auth', 
+            usuarios: '/api/usuarios',
+            categorias:'/api/categorias'
+        }
 
 
-
-        this.usuariosRoutePath = '/api/usuarios'
 
         //Conecion ala bd
 
@@ -26,25 +30,27 @@ class Server {
         this.routes();
     }
 
-    async conncectarDB(){
+    async conncectarDB() {
         await connectionDb();
     }
 
     routes() {
 
-        this.app.use(this.usuariosRoutePath, require('../routes/user'))
+        this.app.use(this.paths.auth, require('../routes/auth-router'));
+        this.app.use(this.paths.usuarios, require('../routes/user'));
+        this.app.use(this.paths.categorias, require('../routes/categorias-router'));
 
     }
 
-    listen(){
-        this.app.listen(this.port,()=>{
+    listen() {
+        this.app.listen(this.port, () => {
 
             console.log(process.env.PORT);
-        
+
         })
     }
 
-    middlewares(){
+    middlewares() {
 
         // CORS
         this.app.use(cors());
@@ -54,7 +60,7 @@ class Server {
         this.app.use(express.json());
 
         //directorio publico
-        this.app.use(express.static('public'))    
+        this.app.use(express.static('public'))
     }
 }
 
