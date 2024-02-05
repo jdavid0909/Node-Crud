@@ -12,6 +12,7 @@ const { validarRol, tieneRol } = require('../middlewares/validarRole');
 
 const router = Router();
 
+
 router.get('', usuariosGet)
 
 router.post('', [
